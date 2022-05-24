@@ -1,10 +1,18 @@
 import type { NextPage, GetStaticProps } from 'next';
 import { Button } from '@nextui-org/react';
 import { Layout } from '../components/layouts';
+import { pokeApi } from '../api';
+import { PokemonListResponse, SmallPokemon } from '../interfaces';
 
 
-const HomePage: NextPage = (props) => {
-  console.log(props);
+interface Props {
+  pokemons: SmallPokemon[];
+}
+
+
+
+const HomePage: NextPage<Props> = ({ pokemons }) => {
+  console.log(pokemons;
 
   return (
     <>
@@ -25,11 +33,16 @@ const HomePage: NextPage = (props) => {
 
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  console.log('Hola mundo');
+
+  const { data } = await pokeApi.get<PokemonListResponse>('/pokemon?limit=151')
+
+  console.log(data);
+
+  // https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/132.svg
 
   return {
     props: {
-      name: 'Axel'
+      pokemons: data.results
     }
   }
 }
