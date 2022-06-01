@@ -5,6 +5,7 @@ import { pokeApi } from '../../api';
 import { Layout } from '../../components/layouts'
 import { Pokemon } from '../../interfaces';
 import { Sprites } from '../../interfaces/pokemon-full';
+import { localFavorites } from '../../utils';
 
 
 
@@ -15,8 +16,13 @@ interface Props{
 
 const PokemonPage: NextPage<Props> = ({ pokemon }) => {
 
+  const onToggleFavorite = () => {
+    localFavorites.toggleFavorite( pokemon.id );
+  }
+
+
   return (
-    <Layout title='Algun Pokemon'>
+    <Layout title={ pokemon.name }>
         <Grid.Container css={{ marginTop: '5px' }} gap={ 2 }>
           <Grid xs={ 12 } sm={ 4 }>
             <Card hoverable css={{ padding: '30px' }}>
@@ -37,6 +43,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                 <Button
                   color="gradient"
                   ghost
+                  onClick={onToggleFavorite}
                 >
                   Guardar en favoritos
                 </Button>
