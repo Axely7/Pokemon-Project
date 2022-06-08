@@ -14,6 +14,9 @@ const toggleFavorite = ( id:number ) => {
     localStorage.setItem('favorites', JSON.stringify( favorites ));
 }
 
+
+
+
 const existInFavorites = ( id: number ): boolean => {
 
     if ( typeof window === 'undefined' ) return false;
