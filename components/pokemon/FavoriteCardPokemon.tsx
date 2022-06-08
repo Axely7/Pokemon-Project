@@ -13,7 +13,7 @@ export const FavoriteCardPokemon: FC<Props> = ( { pokemonId } ) => {
     const router = useRouter();
 
     const onFavoriteClicked = () => {
-        router.push(`/pokemon/${pokemonId}`);
+        router.push(`/name/${pokemonId}`);
     }
 
 
