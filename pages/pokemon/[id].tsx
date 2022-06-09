@@ -11,6 +11,7 @@ import { Pokemon } from '../../interfaces';
 import { Sprites } from '../../interfaces/pokemon-full';
 import { localFavorites } from '../../utils';
 import { getPokemonInfo } from '../../utils/';
+import { redirect } from 'next/dist/server/api-utils';
 
 
 
@@ -113,6 +114,8 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
 
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
 
+// El static paths siempre va a necesitar a static props.
+
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
   const pokemon151 = [...Array(151)].map( (value, index) => `${ index + 1 }` );
@@ -139,20 +142,34 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
     paths: pokemon151.map( id => ({
       params: { id }
     })),
-    fallback: false
+    fallback: 'blocking'
   }
 }
 
+
+// static props no necesariamente necesita a static paths.
 
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const { id } = params as { id: string };
 
+  const pokemon = await getPokemonInfo( id );
+
+  if ( !pokemon ) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
   return {
     props: {
-      pokemon: await getPokemonInfo( id )
-    }
+      pokemon: pokemon
+    },
+    revalidate: 86400, // Pueden ser 10 segundos, se puede generar el tiempo que se desee, en este caso de valida cada 24 hrs.
   }
 }
 
