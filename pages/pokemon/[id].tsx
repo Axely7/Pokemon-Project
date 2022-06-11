@@ -149,7 +149,6 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
 // static props no necesariamente necesita a static paths.
 
-
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const { id } = params as { id: string };
